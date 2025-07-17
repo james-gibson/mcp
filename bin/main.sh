@@ -1,3 +1,3 @@
-#! /bin/bash
+#!/bin/npx
 
-npx --verbose ts-node ../src/main.ts
+ts-node ./src/main.ts
