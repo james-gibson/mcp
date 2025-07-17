@@ -2,7 +2,8 @@
   "name": "mcp-cli",
   "version": "0.1.0",
   "description": "CLI for creating Model Context Protocol servers",
-  "main": "dist/main.js",
+  "bin": "src/main.ts",
+  "main": "src/main.ts",
   "scripts": {
     "build": "nest build",
     "postinstall": "npx nest build",
