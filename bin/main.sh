@@ -1,3 +1,3 @@
-#!/bin/npx
+#!/bin/node
 
-ts-node ./src/main.ts
+node ./src/main.ts
