@@ -2,4 +2,3 @@
 
 const main = await import("./dist/main.js");
 
-main();
