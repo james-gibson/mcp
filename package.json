@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "module": true,
   "description": "CLI for creating Model Context Protocol servers",
-  "bin": "src/main.ts",
+  "bin": "dist/main.js",
   "main": "src/main.ts",
   "scripts": {
-    "build": "nest build",
+    "build": "nest build --tsc && tree dist/ && tree src/",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
