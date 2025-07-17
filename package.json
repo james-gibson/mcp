@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "module": "true",
   "description": "CLI for creating Model Context Protocol servers",
-  "bin": "./mcp-cli",
+  "bin": "dist/main.js",
   "main": "src/main.ts",
   "scripts": {
     "build": "nest build --tsc && tree dist/ && tree src/",
