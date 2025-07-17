@@ -6,7 +6,6 @@
   "main": "src/main.ts",
   "scripts": {
     "build": "nest build",
-    "postinstall": "npx nest build",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
