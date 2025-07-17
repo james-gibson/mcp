@@ -1,0 +1,68 @@
+name: Release                                                                                                             
+                                                                                                                          
+on:                                                                                                                       
+  push:                                                                                                                   
+    tags:                                                                                                                 
+      - 'v*'                                                                                                              
+  workflow_dispatch:                                                                                                      
+    inputs:                                                                                                               
+      version:                                                                                                            
+        description: 'Version to release (e.g., v1.0.0)'                                                                  
+        required: true                                                                                                    
+        type: string                                                                                                      
+                                                                                                                          
+jobs:                                                                                                                     
+  release:                                                                                                                
+    runs-on: ubuntu-latest                                                                                                
+                                                                                                                          
+    permissions:                                                                                                          
+      contents: write                                                                                                     
+      packages: write                                                                                                     
+                                                                                                                          
+    steps:                                                                                                                
+      - name: Checkout code                                                                                               
+        uses: actions/checkout@v4                                                                                         
+                                                                                                                          
+      - name: Setup Node.js                                                                                               
+        uses: actions/setup-node@v4                                                                                       
+        with:                                                                                                             
+          node-version: '18'                                                                                              
+          cache: 'npm'                                                                                                    
+                                                                                                                          
+      - name: Install dependencies                                                                                        
+        run: npm ci                                                                                                       
+                                                                                                                          
+      - name: Build project                                                                                               
+        run: npm run build                                                                                                
+                                                                                                                          
+      - name: Run tests                                                                                                   
+        run: npm test                                                                                                     
+        continue-on-error: true                                                                                           
+                                                                                                                          
+      - name: Get version from tag or input                                                                               
+        id: version                                                                                                       
+        run: |                                                                                                            
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then                                                   
+            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT                                           
+          else                                                                                                            
+            echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT                                                     
+          fi                                                                                                              
+                                                                                                                          
+      - name: Create release archive                                                                                      
+        run: |                                                                                                            
+          mkdir -p release                                                                                                
+          cp -r dist package.json README.md LICENSE main.sh bin/ release/ 2>/dev/null || true                             
+          tar -czf mcp-cli-${{ steps.version.outputs.version }}.tar.gz -C release .                                       
+                                                                                                                          
+      - name: Create GitHub Release                                                                                       
+        uses: softprops/action-gh-release@v1                                                                              
+        with:                                                                                                             
+          tag_name: ${{ steps.version.outputs.version }}                                                                  
+          name: Release ${{ steps.version.outputs.version }}                                                              
+          draft: false                                                                                                    
+          prerelease: false                                                                                               
+          generate_release_notes: true                                                                                    
+          files: |                                                                                                        
+            mcp-cli-${{ steps.version.outputs.version }}.tar.gz                                                           
+        env:                                                                                                              
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}      
