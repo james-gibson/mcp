@@ -7,7 +7,7 @@
   "main": "src/main.ts",
   "scripts": {
     "claude-install": "npx claude mcp remove mcp-cli; npx claude mcp add mcp-cli 'node /home/james/src/james-gibson/mcp/mcp-cli create-server'",
-    "ins": "npx claude mcp remove dev; npx claude mcp add dev 'npx  -y https://github.com/james-gibson/mcp/releases/download/v0.1.18/mcp-cli-v0.1.18.tar.gz create-server'",
+    "ins": "npx claude mcp remove dev; npx claude mcp add dev 'npx  -y https://github.com/james-gibson/mcp/releases/download/v0.1.20/mcp-cli-v0.1.20.tar.gz create-server'",
     "build": "nest build --tsc && tree dist/ && tree src/",
     "hot": "nest build --watch",
     "start": "nest start",
