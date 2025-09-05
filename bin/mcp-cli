@@ -1,5 +1,4 @@
-#!/usr/bin/env node
+#! /usr/bin/env node
 
-const main = await import("../src/main");
+import "../dist/main.js";
 
-main();

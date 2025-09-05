@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Command } from 'commander';
 import { CreateServerCommand } from './create-server.command';
+import { TemplateProcessorCommand, TemplateProcessorOptions } from '../templating/template-processor.command';
 
 interface ServerOptions {
   name: string;
@@ -15,6 +16,7 @@ export class CommandFactory {
 
   constructor(
     private readonly createServerCommand: CreateServerCommand,
+    private readonly templateProcessorCommand: TemplateProcessorCommand,
   ) {}
 
   async execute(): Promise<void> {
@@ -22,7 +24,7 @@ export class CommandFactory {
 
     program
       .name('mcp-cli')
-      .description('CLI for creating Model Context Protocol servers')
+      .description('CLI for creating Model Context Protocol servers and processing templates')
       .version('0.1.0');
 
     // Register the create server command
@@ -45,7 +47,22 @@ export class CommandFactory {
         await this.createServerCommand.execute(serverOptions);
       });
 
-    // Add more commands here in the future
+    // Register the template processing command
+    // Requirement: CLI interface with --templates, --dry-run, --json, --copy, --max-tokens flags
+    program
+      .command('process-templates')
+      .description('Process templates using S-expression syntax with directive expansion')
+      .requiredOption('--templates <s-expression>', 'S-expression defining template composition (e.g., "(prompt.md snippet.tsx)")')
+      .option('--dry-run', 'Assemble and print the LLM prompt without making an API call', false)
+      .option('--json', 'Output the full transaction details in structured format', false)
+      .option('--copy', 'Copy the final output to the system clipboard', false)
+      .option('--max-tokens <number>', 'Override the default token safety limit', parseInt)
+      .action(async (options: TemplateProcessorOptions) => {
+        const result = await this.templateProcessorCommand.execute(options);
+        if (!result.success) {
+          process.exit(1);
+        }
+      });
 
     // Parse command line arguments
     await program.parseAsync(process.argv);
