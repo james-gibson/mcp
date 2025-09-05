@@ -29,7 +29,7 @@ export class ToolsService {
    */
   private registerCalculatorTool(server: McpServer): void {
     server.registerTool(
-      'calculate',
+      'calculator',
       {
         title: 'Calculator',
         description: 'Perform basic arithmetic operations',

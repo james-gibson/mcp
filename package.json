@@ -6,8 +6,10 @@
   "bin": "dist/main.js",
   "main": "src/main.ts",
   "scripts": {
-    "claude-install": "npx claude mcp remove mcp-cli; npx claude mcp add mcp-cli 'node /home/james/src/james-gibson/mcp/bin/mcp-cli create-server'",
+    "claude-install": "npx claude mcp remove mcp-cli; npx claude mcp add mcp-cli 'node /home/james/src/james-gibson/mcp/mcp-cli create-server'",
+    "ins": "npx claude mcp remove dev; npx claude mcp add dev 'npx  -y https://github.com/james-gibson/mcp/releases/download/v0.1.18/mcp-cli-v0.1.18.tar.gz create-server'",
     "build": "nest build --tsc && tree dist/ && tree src/",
+    "hot": "nest build --watch",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -32,6 +34,7 @@
     "@nestjs/platform-express": "^10.4.19",
     "commander": "^11.1.0",
     "express": "^5.1.0",
+    "graphql": "^16.11.0",
     "reflect-metadata": "^0.1.14",
     "rxjs": "^7.8.2",
     "zod": "^3.25.76"

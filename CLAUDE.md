@@ -6,6 +6,8 @@ This document provides guidance for contributors to the MCP CLI project. It expl
 
 MCP CLI is a command-line interface built with NestJS and Commander.js that makes it easy to create and run Model Context Protocol (MCP) servers. The CLI provides a simple way to start an MCP server that can expose resources, tools, and prompts to LLM clients.
 
+Additionally, the CLI includes a sophisticated template processing system that uses S-expression syntax to compose complex, context-rich prompts with a three-tiered directive system for reliable document generation.
+
 ## Architecture
 
 The project follows a modular architecture based on NestJS:
@@ -22,6 +24,13 @@ src/
 │   ├── resources.service.ts    # Service for registering resources
 │   ├── tools.service.ts        # Service for registering tools
 │   └── prompts.service.ts      # Service for registering prompts
+├── templating/        # Template processing system
+│   ├── templating.module.ts    # NestJS module for templating functionality
+│   ├── parser.service.ts       # S-expression parser with comment support
+│   ├── renderer.service.ts     # Converts S-expressions to template content
+│   ├── pre-processing-expander.service.ts   # Handles @@include@@ directives
+│   ├── post-processing-expander.service.ts  # Handles @@snippet@@ and @@reference@@ directives
+│   └── template-processor.command.ts        # Main template processing command
 └── main.ts            # Entry point
 ```
 
@@ -34,6 +43,27 @@ The Model Context Protocol (MCP) server is the core component that handles commu
 1. **Resources**: Data that can be loaded into an LLM's context
 2. **Tools**: Functions that can be called by the LLM to perform actions
 3. **Prompts**: Templates for LLM interactions
+
+### Template Processing System
+
+The template processing system is a sophisticated composition engine that uses S-expression syntax to assemble complex prompts with a three-tiered directive system:
+
+1. **S-Expression Parsing**: Uses Lisp-like syntax for template composition (e.g., `(prompt.md snippet.tsx)`)
+2. **Pre-Processing**: Expands `@@include:id@@` directives before LLM processing
+3. **Post-Processing**: Expands `@@snippet:id@@` and `@@reference:id@@` directives after LLM processing
+4. **Recursion Detection**: V1 implementation prevents nested directives for stability
+
+#### Directive System
+
+- **`@@include:id@@`** (Pre-Processing): Replaces with file content before LLM call
+- **`@@snippet:id@@`** (Post-Processing): Replaces with file content after LLM call  
+- **`@@reference:id@@`** (Post-Processing): Replaces with static comment `<!-- Reference: id -->`
+
+#### S-Expression Syntax Features
+
+- **Line Comments**: Use `;` to comment out rest of line
+- **Expression Discard**: Use `#_` to discard the following S-expression
+- **Nested Lists**: Support for complex template composition structures
 
 ### NestJS Integration
 
