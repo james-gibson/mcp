@@ -33,7 +33,7 @@
     "@nestjs/core": "^10.4.19",
     "@nestjs/platform-express": "^10.4.20",
     "commander": "^11.1.0",
-    "express": "^5.1.0",
+    "express": "^5.2.0",
     "graphql": "^16.11.0",
     "reflect-metadata": "^0.1.14",
     "rxjs": "^7.8.2",
