@@ -30,8 +30,8 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.15.1",
     "@nestjs/common": "^10.4.19",
-    "@nestjs/core": "^10.4.19",
-    "@nestjs/platform-express": "^10.4.20",
+    "@nestjs/core": "^11.1.11",
+    "@nestjs/platform-express": "^11.1.11",
     "commander": "^11.1.0",
     "express": "^5.1.0",
     "graphql": "^16.11.0",
@@ -42,7 +42,7 @@
   "devDependencies": {
     "@nestjs/cli": "^11.0.10",
     "@nestjs/schematics": "^10.2.3",
-    "@nestjs/testing": "^10.4.19",
+    "@nestjs/testing": "^11.1.11",
     "@types/jest": "^29.5.14",
     "@types/node": "^20.19.8",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
